@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemstone Detection | Identify Precious Stones</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f8d347;
+            text-shadow: 0 0 10px rgba(248, 211, 71, 0.5);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(248, 211, 71, 0.2);
+            color: #f8d347;
+        }
+
+        .active {
+            background: rgba(248, 211, 71, 0.3);
+            color: #f8d347 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            color: #f8d347;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .btn-camera {
+            display: inline-block;
+            background: linear-gradient(45deg, #f8d347, #ff9a00);
+            color: #000;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(248, 211, 71, 0.4);
+        }
+
+        .btn-camera:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(248, 211, 71, 0.6);
+        }
+
+
+        .btn-gallery {
+            display: inline-block;
+            background: linear-gradient(45deg, #f8d347, #ff9a00);
+            color: #000;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(248, 211, 71, 0.4);
+        }
+
+        .btn-gallery:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(248, 211, 71, 0.6);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 50px;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #f8d347;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(248, 211, 71, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(248, 211, 71, 0.5);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #f8d347;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 50px;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 50px;
+            border-radius: 15px;
+            border: 1px solid rgba(248, 211, 71, 0.3);
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        /* User Guide Section */
+        .user-guide {
+            padding: 100px 50px;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .guide-steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: #f8d347;
+            color: #000;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #f8d347;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid rgba(248, 211, 71, 0.2);
+        }
+
+        .social-links {
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #f8d347;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                margin-top: 20px;
+            }
+
+            .nav-links li {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .features, .about, .user-guide {
+                padding: 60px 20px;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-gem"></i>
+            <span>GemDetect</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#guide"><i class="fas fa-book"></i> User Guide</a></li>
+            <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Discover the Beauty of Gemstones</h1>
+        <p>Our advanced AI-powered gemstone detection system helps you identify precious stones with remarkable accuracy. Whether you're a jeweler, collector, or enthusiast, unlock the secrets of gemstones with a single click.</p>
+        
+<br><br>
+
+</head>
+<body>
+    <div class="container">
+        <button id="openCamera" class="btn-camera">📷 Camera</button>
+        <button id="openGallery" class="btn-gallery">🖼️ Gallery</button>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
+
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 class="feature-title">Advanced Detection</h3>
+                <p>Utilizing cutting-edge machine learning algorithms to identify over 200 types of gemstones with 95% accuracy.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 class="feature-title">Smart Analysis</h3>
+                <p>Detailed analysis of gemstone properties including color, clarity, cut, and carat weight.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 class="feature-title">Mobile Friendly</h3>
+                <p>Works seamlessly on all devices - upload photos directly from your smartphone camera.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3 class="feature-title">Comprehensive Database</h3>
+                <p>Access to an extensive database of gemstone information, history, and market values.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="feature-title">Market Trends</h3>
+                <p>Stay updated with current market trends and valuation estimates for your gemstones.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="feature-title">Fraud Detection</h3>
+                <p>Identify synthetic or treated stones to protect yourself from fraudulent transactions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2 class="section-title">About GemDetect</h2>
+            <p>GemDetect is a revolutionary platform that combines artificial intelligence with gemological expertise to bring accurate gemstone identification to your fingertips. Our mission is to democratize gemstone knowledge and make professional-grade analysis accessible to everyone.</p>
+            <p>Developed by a team of gemologists and AI specialists, our system continuously learns and improves to provide the most reliable results. Whether you're evaluating an inheritance, making a purchase, or simply satisfying your curiosity, GemDetect provides the answers you need.</p>
+            <p>With a passion for both technology and the timeless beauty of gemstones, we've created a tool that bridges the gap between ancient minerals and modern innovation.</p>
+        </div>
+    </section>
+
+    <!-- User Guide Section -->
+    <section class="user-guide" id="guide">
+        <h2 class="section-title">How It Works</h2>
+        <div class="guide-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Upload Your Image</h3>
+                    <p>Take a clear photo of your gemstone or upload an existing image from your device. For best results, use natural lighting and a plain background.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>AI Analysis</h3>
+                    <p>Our advanced algorithms analyze the visual characteristics of your gemstone, comparing it against thousands of reference images in our database.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Receive Detailed Report</h3>
+                    <p>Get a comprehensive report including the likely gemstone type, quality assessment, and interesting facts about your stone's characteristics.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Explore Further</h3>
+                    <p>Dive deeper with our educational resources, market value estimates, and options to connect with certified gemologists for professional verification.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>&copy; 2023 GemDetect. All rights reserved. | <a href="#" style="color: #f8d347;">Privacy Policy</a> | <a href="#" style="color: #f8d347;">Terms of Service</a></p>
+    </footer>
+    <script> src="index.js"</script>
+</body>
+</html>
