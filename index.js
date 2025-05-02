@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const openCameraButton = document.getElementById('openCamera');
     const openGalleryButton = document.getElementById('openGallery');
+    const cameraModeSelect = document.getElementById('cameraMode'); // Dropdown to select camera mode
 
     // Camera functionality
     openCameraButton.addEventListener('click', () => {
+        // Get the selected camera mode (front or back)
+        const selectedCameraMode = cameraModeSelect.value;
+
         // Create a video element to display the camera feed
         const videoElement = document.createElement('video');
         videoElement.autoplay = true;
@@ -61,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Access the camera using the MediaDevices API
         navigator.mediaDevices
-            .getUserMedia({ video: true })
+            .getUserMedia({ video: { facingMode: selectedCameraMode } }) // Use the selected camera mode
             .then((stream) => {
                 videoElement.srcObject = stream;
 
@@ -88,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch((error) => {
                 console.error('Error accessing the camera:', error);
-                alert('Unable to access the camera. Please try again.');
+                alert('Unable to access the camera. Please ensure permissions are granted and the camera is available.');
                 document.body.removeChild(cameraModal);
             });
     });
@@ -98,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create a hidden file input element
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
-        fileInput.accept = 'image/*';
+        fileInput.accept = 'image/*'; // Restrict to image files
         fileInput.style.display = 'none';
 
         // Append the file input to the body
@@ -122,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 reader.readAsDataURL(file);
             }
 
-            // Remove the file input element after use
+            // Remove the file input element after use to keep the DOM clean
             document.body.removeChild(fileInput);
         });
     });
